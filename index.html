@@ -1,14 +1,460 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My Google AI Studio App</title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minden | AI Studio & Business Concepts</title>
+    <style>
+        :root {
+            --primary: #1a1a2e;
+            --secondary: #16213e;
+            --accent: #0f3460;
+            --highlight: #e94560;
+            --text: #f5f5f5;
+            --muted: #a0a0a0;
+            --success: #00d9a5;
+            --premium: #ffd700;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--primary);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        header {
+            background: var(--secondary);
+            padding: 40px 0;
+            text-align: center;
+            border-bottom: 3px solid var(--highlight);
+        }
+        
+        header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, var(--text), var(--highlight));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        header p {
+            color: var(--muted);
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* Navigation */
+        nav {
+            background: var(--accent);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+        
+        nav a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+            padding: 10px 20px;
+            border-radius: 25px;
+        }
+        
+        nav a:hover {
+            color: var(--highlight);
+            background: rgba(233, 69, 96, 0.1);
+        }
+        
+        /* Sections */
+        section {
+            padding: 60px 0;
+        }
+        
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .section-subtitle {
+            color: var(--muted);
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 1.1rem;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--accent) 100%);
+            padding: 80px 0;
+            text-align: center;
+        }
+        
+        .hero h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--muted);
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+        
+        /* Cards Grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+        
+        .card {
+            background: var(--secondary);
+            border-radius: 12px;
+            padding: 35px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid var(--accent);
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(233, 69, 96, 0.2);
+        }
+        
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+            color: var(--highlight);
+        }
+        
+        .card p {
+            color: var(--muted);
+            margin-bottom: 20px;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: var(--highlight);
+            color: var(--text);
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: background 0.3s, transform 0.3s;
+        }
+        
+        .btn:hover {
+            background: #ff6b6b;
+            transform: scale(1.05);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--highlight);
+        }
+        
+        /* Articles Section */
+        .articles-section {
+            background: var(--primary);
+        }
+        
+        .tier-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-left: 10px;
+        }
+        
+        .tier-free {
+            background: var(--success);
+            color: var(--primary);
+        }
+        
+        .tier-premium {
+            background: var(--premium);
+            color: var(--primary);
+        }
+        
+        /* App Section */
+        .app-section {
+            background: var(--secondary);
+            text-align: center;
+        }
+        
+        .app-container {
+            background: var(--primary);
+            border-radius: 12px;
+            padding: 40px;
+            margin-top: 30px;
+            border: 1px solid var(--accent);
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--secondary);
+            padding: 40px 0;
+            text-align: center;
+            border-top: 1px solid var(--accent);
+        }
+        
+        footer p {
+            color: var(--muted);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero h2 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Minden</h1>
+            <p>AI Studio Applications & Computing Business Concepts for Digital Transformation</p>
+        </div>
+    </header>
+
+    <nav>
+        <div class="container">
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#ai-studio">AI Studio App</a></li>
+                <li><a href="#articles">Business Concepts</a></li>
+                <li><a href="#about">About</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="hero" id="home">
+        <div class="container">
+            <h2>Explore AI & Business Technology</h2>
+            <p>Access Google AI Studio applications and comprehensive business computing frameworks designed for modern digital transformation.</p>
+            <a href="#ai-studio" class="btn">Launch AI Studio App</a>
+            <a href="#articles" class="btn btn-outline">Browse Articles</a>
+        </div>
+    </section>
+
+    <section id="ai-studio" class="app-section">
+        <div class="container">
+            <h2 class="section-title">🤖 AI Studio Application</h2>
+            <p class="section-subtitle">Interactive AI-powered tools and experiments</p>
+            
+            <div class="app-container">
+                <div id="root">
+                    <p style="color: var(--muted);">Loading AI Studio Application...</p>
+                </div>
+            </div>
+            <p style="margin-top: 20px; color: var(--muted);">
+                <small>The original Google AI Studio application loads above. If you see this message, JavaScript may be disabled.</small>
+            </p>
+        </div>
+    </section>
+
+    <section id="articles" class="articles-section">
+        <div class="container">
+            <h2 class="section-title">📚 Minden Business Concepts</h2>
+            <p class="section-subtitle">Computing & Digital Transformation Frameworks with Full Implementation Guides</p>
+
+            <div class="cards-grid">
+                <!-- Free Articles -->
+                <div class="card">
+                    <div class="card-icon">📊</div>
+                    <h3>
+                        Data Readiness Assessment
+                        <span class="tier-badge tier-free">Free</span>
+                    </h3>
+                    <p>Six-dimensional framework to evaluate organizational data infrastructure. Includes Python implementation with automated scoring and radar chart visualization.</p>
+                    <a href="minden-articles/article-data-readiness.html" class="btn">Read Article</a>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">📱</div>
+                    <h3>
+                        Mobile-First E-Commerce
+                        <span class="tier-badge tier-free">Free</span>
+                    </h3>
+                    <p>Architecture patterns for emerging market e-commerce with offline functionality, low-bandwidth optimization, and last-mile logistics solutions.</p>
+                    <a href="minden-articles/article-mobile-ecommerce.html" class="btn">Read Article</a>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">🔮</div>
+                    <h3>
+                        Predictive Resource Management
+                        <span class="tier-badge tier-free">Free</span>
+                    </h3>
+                    <p>IoT-based forecasting systems for water, energy, and agricultural resources using time-series analysis and edge computing.</p>
+                    <a href="minden-articles/article-predictive-resource.html" class="btn">Read Article</a>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">🌾</div>
+                    <h3>
+                        Precision Agriculture Platform
+                        <span class="tier-badge tier-free">Free</span>
+                    </h3>
+                    <p>Sensor networks for soil monitoring, irrigation automation, and crop yield prediction using precision agriculture techniques.</p>
+                    <a href="minden-articles/article-precision-agriculture.html" class="btn">Read Article</a>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">🦁</div>
+                    <h3>
+                        Biodiversity Monitoring Systems
+                        <span class="tier-badge tier-free">Free</span>
+                    </h3>
+                    <p>Computer vision and AI for wildlife population tracking, conservation assessment, and sustainable ecotourism management.</p>
+                    <a href="minden-articles/article-biodiversity.html" class="btn">Read Article</a>
+                </div>
+
+                <!-- Premium Articles -->
+                <div class="card">
+                    <div class="card-icon">📡</div>
+                    <h3>
+                        Telecom Market Analysis
+                        <span class="tier-badge tier-premium">Premium</span>
+                    </h3>
+                    <p>Competitive analysis platform with market share visualization, pricing models, and predictive growth modeling for telecom operators.</p>
+                    <a href="minden-articles/article-telecom-analysis.html" class="btn btn-outline">Preview</a>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">💳</div>
+                    <h3>
+                        Fintech Innovation KPIs
+                        <span class="tier-badge tier-premium">Premium</span>
+                    </h3>
+                    <p>Real-time dashboards for mobile money adoption metrics, digital payment growth tracking, and financial inclusion analytics.</p>
+                    <a href="minden-articles/article-fintech-kpi.html" class="btn btn-outline">Preview</a>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">🏥</div>
+                    <h3>
+                        Healthcare Cloud Architecture
+                        <span class="tier-badge tier-premium">Premium</span>
+                    </h3>
+                    <p>HIPAA-compliant cloud infrastructure for telehealth platforms, patient data management, and digital health surveillance systems.</p>
+                    <a href="minden-articles/article-healthcare-cloud.html" class="btn btn-outline">Preview</a>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">📦</div>
+                    <h3>
+                        Supply Chain Trade Analytics
+                        <span class="tier-badge tier-premium">Premium</span>
+                    </h3>
+                    <p>Import/export flow visualization, supply-demand gap detection, and investment opportunity scoring engines.</p>
+                    <a href="minden-articles/article-supply-chain.html" class="btn btn-outline">Preview</a>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">⚡</div>
+                    <h3>
+                        Energy Sector SWOT Automation
+                        <span class="tier-badge tier-premium">Premium</span>
+                    </h3>
+                    <p>Automated SWOT analysis for renewable energy investments with risk assessment and market entry strategies.</p>
+                    <a href="minden-articles/article-energy-swot.html" class="btn btn-outline">Preview</a>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 40px;">
+                <a href="minden-articles/index.html" class="btn" style="padding: 15px 40px; font-size: 1.1rem;">
+                    View All Articles →
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" style="background: var(--secondary);">
+        <div class="container">
+            <h2 class="section-title">🎯 About Minden</h2>
+            <p class="section-subtitle">Bridging AI innovation with practical business computing</p>
+            
+            <div class="cards-grid" style="margin-top: 40px;">
+                <div class="card" style="text-align: center;">
+                    <div class="card-icon">🚀</div>
+                    <h3>AI Studio</h3>
+                    <p>Interactive AI applications and experiments built with Google's AI Studio platform.</p>
+                </div>
+                <div class="card" style="text-align: center;">
+                    <div class="card-icon">💡</div>
+                    <h3>Business Concepts</h3>
+                    <p>Computing frameworks derived from multi-sector analysis for digital transformation.</p>
+                </div>
+                <div class="card" style="text-align: center;">
+                    <div class="card-icon">🌍</div>
+                    <h3>Global Application</h3>
+                    <p>Frameworks designed for any environment—adaptable to local contexts worldwide.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Minden. AI Studio & Computing Business Concepts.</p>
+            <p style="margin-top: 10px; font-size: 0.9rem;">
+                <a href="https://github.com/babakane/minden-pages" style="color: var(--highlight);">GitHub Repository</a>
+            </p>
+        </div>
+    </footer>
+
+    <!-- Original App Script -->
     <script type="module" crossorigin src="./assets/index-Dzz4IY_3.js"></script>
     <link rel="stylesheet" crossorigin href="./assets/index-BqyEB7HQ.css">
-  </head>
-  <body>
-    <div id="root"></div>
-  </body>
+</body>
 </html>
+
 

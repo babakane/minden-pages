@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Precision Agriculture Platform | Minden Business Concepts</title>
+    <style>
+        :root { --primary: #1a1a2e; --secondary: #16213e; --accent: #0f3460; --highlight: #e94560; --text: #f5f5f5; --muted: #a0a0a0; --success: #00d9a5; --code-bg: #0d1117; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--primary); color: var(--text); line-height: 1.7; }
+        .container { max-width: 800px; margin: 0 auto; padding: 0 20px; }
+        .article-header { background: var(--secondary); padding: 60px 0; border-bottom: 3px solid var(--highlight); }
+        .article-title { font-size: 2.5rem; margin-bottom: 20px; }
+        .article-meta { color: var(--muted); display: flex; gap: 20px; align-items: center; }
+        .badge-free { background: var(--success); color: var(--primary); padding: 4px 12px; border-radius: 20px; font-weight: 600; font-size: 0.75rem; }
+        .article-content { padding: 50px 0; }
+        .article-content h2 { font-size: 1.8rem; margin: 40px 0 20px; color: var(--highlight); }
+        .article-content h3 { font-size: 1.3rem; margin: 30px 0 15px; color: #64b5f6; }
+        .article-content p { margin-bottom: 20px; color: #d0d0d0; }
+        .code-block { background: var(--code-bg); border: 1px solid var(--accent); border-radius: 8px; padding: 20px; margin: 25px 0; overflow-x: auto; }
+        .code-block pre { color: #e6edf3; font-family: 'Consolas', 'Monaco', monospace; font-size: 0.9rem; line-height: 1.5; }
+        .code-header { background: var(--accent); padding: 10px 20px; border-radius: 8px 8px 0 0; font-size: 0.85rem; color: var(--muted); margin: -20px -20px 15px -20px; }
+        .follow-up { background: var(--secondary); border: 2px solid var(--highlight); border-radius: 12px; padding: 30px; margin: 50px 0; }
+        .follow-up h3 { color: var(--highlight); margin-bottom: 15px; }
+        .follow-up ul { list-style: none; padding-left: 0; }
+        .follow-up li { padding: 8px 0; padding-left: 25px; position: relative; }
+        .follow-up li::before { content: "→"; position: absolute; left: 0; color: var(--highlight); }
+        .btn { display: inline-block; padding: 12px 30px; background: var(--highlight); color: var(--text); text-decoration: none; border-radius: 25px; font-weight: 600; margin: 10px; transition: transform 0.3s; }
+        .btn:hover { transform: scale(1.05); }
+        nav.breadcrumb { padding: 20px 0; color: var(--muted); }
+        nav.breadcrumb a { color: var(--highlight); text-decoration: none; }
+    </style>
+</head>
+<body>
+    <article class="article-header">
+        <div class="container">
+            <nav class="breadcrumb"><a href="index.html">← Back to All Articles</a></nav>
+            <h1 class="article-title">Precision Agriculture IoT Platform</h1>
+            <div class="article-meta"><span class="badge-free">FREE</span><span>9 min read</span><span>AgriTech</span></div>
+        </div>
+    </article>
+    <main class="container article-content">
+        <p class="lead">Build sensor networks for soil monitoring, irrigation automation, and crop yield prediction using edge computing.</p>
+        
+        <h2>Smart Agriculture Architecture</h2>
+        <p>Precision agriculture combines IoT sensors, edge computing, and machine learning to optimize farming operations and maximize yields.</p>
+        
+        <h3>1. Soil Monitoring System</h3>
+        <div class="code-block">
+            <div class="code-header">Python • soil_monitor.py</div>
+            <pre><code>import random
+from dataclasses import dataclass
+from datetime import datetime
+from typing import List, Dict
+import json
+
+@dataclass
+class SoilReading:
+    sensor_id: str
+    timestamp: datetime
+    moisture: float  # percentage
+    ph: float
+    nitrogen: float  # mg/kg
+    phosphorus: float
+    potassium: float
+    temperature: float  # celsius
+    
+    def to_dict(self) -> Dict:
+        return {
+            'sensor_id': self.sensor_id,
+            'timestamp': self.timestamp.isoformat(),
+            'moisture': self.moisture,
+            'ph': self.ph,
+            'nitrogen': self.nitrogen,
+            'phosphorus': self.phosphorus,
+            'potassium': self.potassium,
+            'temperature': self.temperature,
+            'health_score': self.calculate_health()
+        }
+    
+    def calculate_health(self) -> float:
+        """Calculate soil health score 0-100."""
+        score = 100
+        
+        # Optimal ranges
+        if not (6.0 <= self.ph <= 7.5):
+            score -= 15
+        if self.moisture < 30:
+            score -= 20
+        if self.nitrogen < 20:
+            score -= 10
+        if self.phosphorus < 15:
+            score -= 10
+            
+        return max(0, score)
+
+class SoilMonitoringNetwork:
+    """Manages distributed soil sensor network."""
+    
+    def __init__(self):
+        self.sensors = {}
+        self.readings_history = []
+    
+    def register_sensor(self, sensor_id: str, location: Dict):
+        """Register new soil sensor in the network."""
+        self.sensors[sensor_id] = {
+            'location': location,
+            'installed': datetime.now(),
+            'status': 'active'
+        }
+    
+    def record_reading(self, reading: SoilReading):
+        """Store sensor reading and trigger alerts if needed."""
+        self.readings_history.append(reading.to_dict())
+        
+        # Alert on low health
+        if reading.calculate_health() < 50:
+            self.send_alert(reading.sensor_id, 'low_soil_health')
+    
+    def get_field_health_report(self) -> Dict:
+        """Generate aggregated soil health report."""
+        if not self.readings_history:
+            return {'status': 'no_data'}
+        
+        recent = self.readings_history[-100:]  # Last 100 readings
+        health_scores = [r['health_score'] for r in recent]
+        
+        return {
+            'average_health': sum(health_scores) / len(health_scores),
+            'sensors_active': len(self.sensors),
+            'total_readings': len(self.readings_history),
+            'alerts_24h': len([r for r in recent if r['health_score'] < 50]),
+            'recommendations': self.generate_recommendations(recent)
+        }
+    
+    def generate_recommendations(self, readings: List[Dict]) -> List[str]:
+        """Generate farming recommendations based on data."""
+        recs = []
+        
+        avg_moisture = sum(r['moisture'] for r in readings) / len(readings)
+        avg_ph = sum(r['ph'] for r in readings) / len(readings)
+        
+        if avg_moisture < 30:
+            recs.append("Increase irrigation - low soil moisture detected")
+        elif avg_moisture > 70:
+            recs.append("Reduce irrigation - risk of waterlogging")
+            
+        if avg_ph < 6.0:
+            recs.append("Apply lime - soil pH too acidic")
+        elif avg_ph > 7.5:
+            recs.append("Apply sulfur - soil pH too alkaline")
+            
+        return recs</code></pre>
+        </div>
+        
+        <h3>2. Irrigation Controller</h3>
+        <div class="code-block">
+            <div class="code-header">Python • irrigation_controller.py</div>
+            <pre><code>from datetime import datetime, timedelta
+from typing import Optional
+
+class SmartIrrigationController:
+    """Automated irrigation based on soil conditions and weather."""
+    
+    def __init__(self, field_id: str, valve_pins: Dict[str, int]):
+        self.field_id = field_id
+        self.valve_pins = valve_pins
+        self.irrigation_log = []
+        self.target_moisture = 45  # percent
+        
+    def should_irrigate(self, current_moisture: float,
+                        weather_forecast: Dict) -> bool:
+        """Determine if irrigation is needed."""
+        # Don't irrigate if rain expected
+        if weather_forecast.get('rain_probability', 0) > 70:
+            return False
+            
+        # Irrigate if soil too dry
+        if current_moisture < self.target_moisture - 15:
+            return True
+            
+        return False
+    
+    def calculate_duration(self, current_moisture: float,
+                          soil_type: str = 'loam') -> int:
+        """Calculate irrigation duration in minutes."""
+        deficit = self.target_moisture - current_moisture
+        
+        # Soil absorption rates
+        rates = {'sand': 2.0, 'loam': 1.0, 'clay': 0.5}
+        rate = rates.get(soil_type, 1.0)
+        
+        return int((deficit / rate) * 2)  # minutes
+    
+    def execute_irrigation(self, zone: str, duration: int):
+        """Trigger irrigation for specific zone."""
+        if zone not in self.valve_pins:
+            raise ValueError(f"Unknown zone: {zone}")
+        
+        # Log the action
+        self.irrigation_log.append({
+            'zone': zone,
+            'duration': duration,
+            'started': datetime.now(),
+            'valve_pin': self.valve_pins[zone]
+        })
+        
+        print(f"Irrigating zone {zone} for {duration} minutes")
+        
+    def get_water_usage_report(self, days: int = 7) -> Dict:
+        """Calculate water consumption over period."""
+        cutoff = datetime.now() - timedelta(days=days)
+        recent = [i for i in self.irrigation_log if i['started'] > cutoff]
+        
+        total_minutes = sum(i['duration'] for i in recent)
+        # Estimate liters (assume 10L per minute per zone)
+        total_liters = total_minutes * 10
+        
+        return {
+            'period_days': days,
+            'total_irrigations': len(recent),
+            'total_minutes': total_minutes,
+            'estimated_liters': total_liters,
+            'zones_used': list(set(i['zone'] for i in recent))
+        }</code></pre>
+        </div>
+        
+        <div class="follow-up">
+            <h3>📋 Your AgriTech Implementation</h3>
+            <ul>
+                <li>Deploy soil sensors across field zones (NPK, pH, moisture)</li>
+                <li>Set up LoRaWAN or NB-IoT network for remote connectivity</li>
+                <li>Implement edge computing nodes for local decision-making</li>
+                <li>Configure automated irrigation with weather integration</li>
+                <li>Build dashboard for real-time field monitoring</li>
+            </ul>
+        </div>
+        
+        <a href="index.html" class="btn">← Back to Articles</a>
+    </main>
+</body>
+</html>
