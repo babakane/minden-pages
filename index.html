@@ -99,7 +99,54 @@
             color: var(--highlight);
             background: rgba(233, 69, 96, 0.1);
         }
-        
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+                position: absolute;
+                right: 20px;
+                top: 50%;
+                transform: translateY(-50%);
+            }
+
+            nav ul {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--accent);
+                flex-direction: column;
+                padding: 20px;
+                gap: 10px;
+                box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            }
+
+            nav ul.active {
+                display: flex;
+            }
+
+            nav ul li {
+                width: 100%;
+            }
+
+            nav ul li a {
+                display: block;
+                text-align: center;
+                padding: 15px;
+            }
+        }
+
         /* Sections */
         section {
             padding: 60px 0;
@@ -257,13 +304,31 @@
             background: var(--secondary);
             text-align: center;
         }
-        
+
         .app-container {
             background: var(--primary);
             border-radius: 12px;
             padding: 40px;
             margin-top: 30px;
             border: 1px solid var(--accent);
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            border: 3px solid var(--accent);
+            border-radius: 50%;
+            border-top-color: var(--highlight);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
         
         /* Footer */
@@ -273,11 +338,40 @@
             text-align: center;
             border-top: 1px solid var(--accent);
         }
-        
+
         footer p {
             color: var(--muted);
         }
-        
+
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--highlight);
+            color: var(--text);
+            border: none;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+            z-index: 999;
+            box-shadow: 0 4px 15px rgba(233, 69, 96, 0.4);
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(233, 69, 96, 0.6);
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             header h1 {
@@ -308,12 +402,13 @@
     </header>
 
     <nav>
-        <div class="container">
-            <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#ai-studio">AI Studio App</a></li>
-                <li><a href="#articles">Business Concepts</a></li>
-                <li><a href="#about">About</a></li>
+        <div class="container" style="position: relative;">
+            <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+            <ul id="nav-menu">
+                <li><a href="#home" onclick="closeMenu()">Home</a></li>
+                <li><a href="#ai-studio" onclick="closeMenu()">AI Studio App</a></li>
+                <li><a href="#articles" onclick="closeMenu()">Business Concepts</a></li>
+                <li><a href="#about" onclick="closeMenu()">About</a></li>
             </ul>
         </div>
     </nav>
@@ -334,11 +429,11 @@
             
             <div class="app-container">
                 <div id="root">
-                    <p style="color: var(--muted);">Loading AI Studio Application...</p>
+                    <div class="loading-spinner"></div>
                 </div>
             </div>
             <p style="margin-top: 20px; color: var(--muted);">
-                <small>The original Google AI Studio application loads above. If you see this message, JavaScript may be disabled.</small>
+                <small>Loading interactive application...</small>
             </p>
         </div>
     </section>
@@ -494,8 +589,49 @@
         </div>
     </footer>
 
+    <button class="back-to-top" id="backToTop" onclick="scrollToTop()">↑</button>
+
     <!-- Original App Script -->
     <script type="module" crossorigin src="./assets/index-Dzz4IY_3.js"></script>
+
+    <script>
+        // Mobile menu toggle
+        function toggleMenu() {
+            const menu = document.getElementById('nav-menu');
+            menu.classList.toggle('active');
+        }
+
+        function closeMenu() {
+            const menu = document.getElementById('nav-menu');
+            menu.classList.remove('active');
+        }
+
+        // Back to top button
+        const backToTopBtn = document.getElementById('backToTop');
+
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTopBtn.classList.add('visible');
+            } else {
+                backToTopBtn.classList.remove('visible');
+            }
+        });
+
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // Hide loading spinner when React app loads
+        window.addEventListener('load', () => {
+            const root = document.getElementById('root');
+            if (root && root.children.length > 0) {
+                // React has loaded
+            }
+        });
+    </script>
 </body>
 </html>
 
